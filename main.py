@@ -18,7 +18,7 @@ def hello():
         #     player3 = input("Podaj imię trzeciego gracza: ")
         #     player4 = input("Podaj imię czwartego gracza: ")
 
-        Prepare.generate_players_cards(int(players))
+        Prepare.generate_array_cards(int(players))
         print("A więc grajmy!")
     elif int(players) == 1:
         print("Troche nas za mało do gry :(")

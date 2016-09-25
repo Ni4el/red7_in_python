@@ -1,67 +1,49 @@
-from random import randint
-from random import choice
+from itertools import product
+from random import shuffle
 
 class Prepare:
 
     """ Generate start deck"""
-    def generate_array_cards():
-        cards = {}
-        # colors = ["red", "orange", "yellow", "green", "blue", "indygo", "purple"]
-        j = 1
-        k = 0
+    def generate_array_cards(players):
 
-        for i in range(49):
+        # make a deck of cards
+        deck = list(product(range(0, 7), ['Red', 'Orange', 'Yellow', 'Green', 'Blue', 'Indygo', 'Purple']))
 
-            i += 1;
-            k += 1;
-
-            # cards[i] = str(k) + colors[j]
-            cards[i] = str(k) + str(j)
-
-            if i % 7 == 0:
-                j += 1
-                k = 0
-
-        # print(cards)
-        return cards
-
-    """ Generate cards for each players"""
-
-    def generate_players_cards(players):
-
-        cards = Prepare.generate_array_cards()
-
-        player_hand1 = []
-        hands = 1 * 7
-        i = 1
-
-        for i in range(hands):
-            card = choice(list(cards.keys()))
-
-            print(card)
-            print(cards[card])
-
-            player_hand1[i] = cards[card]
-            i += 1
-
-            del cards[card]
-
-
-        print(player_hand1)
-
-        print(cards)
+        # shuffle the cards
+        shuffle(deck)
 
         player_hand1 = []
         player_hand2 = []
+        player_hand3 = []
+        player_hand4 = []
+        # print(deck)
+        # draw seven cards
+        palette = 7
+        amount_players = palette * players
+        print(amount_players)
+        for i in range(amount_players):
 
-        if players == 3:
-            player_hand3 = []
-        elif players == 4:
-            player_hand3 = []
-            player_hand4 = []
+            # print(deck[i][0], "of", deck[i][1])
+            if i <= 6:
+                player_hand1.append(deck[i])
+            elif 14 > i > 6:
+                player_hand2.append(deck[i])
+            elif 21 > i > 13:
+                player_hand3.append(deck[i])
+            elif 28 > i > 20:
+                player_hand4.append(deck[i])
+            print(deck)
+            del deck[i]
+        print("player_hand1")
+        print(player_hand1)
+        print("player_hand2")
+        print(player_hand2)
+        print("player_hand3")
+        print(player_hand3)
+        print("player_hand4")
+        print(player_hand4)
+        print(len(deck))
 
 
-    # def generate_player_hand():
-    #
-    #     cards = Prepare.generate_array_cards()
+
 
