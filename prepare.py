@@ -77,31 +77,25 @@ class Prepare:
 
     def verify_winner():
 
-        test = []
         same_values = []
-        test = palette1 + palette2 + palette3 + palette4
+        paletts = palette1 + palette2 + palette3 + palette4
 
-        winner1 = max(test,key=itemgetter(0))[0]
+        winner1 = max(paletts, key=itemgetter(0))[0]
 
-        winner2 = []
+        for j in range(len(paletts)):
+            if paletts[j][0] == winner1:
+                same_values = paletts[j]
+                # print("same value")
+                # print(same_values)
 
-        print(type(test))
-        print("---2323-")
-        for j in range(len(test)):
-            if test[j][0] == winner1:
+        if len(same_values) > 1:
+            winner2 = max(same_values, key=itemgetter(1))
 
-                same_values = test[j];
-                print(same_values)
-
-        print(type(same_values))
-        winner2 = max(list(same_values), key=itemgetter(1))
-
-
-        # print(test)
-        # print("----")
-        # print(winner1)
-        # print("----")
-        # print(d[winner1])
+        print(paletts)
+        print("----")
+        print(winner1)
+        print("----")
+        print(winner2)
 
 
 
