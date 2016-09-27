@@ -3,9 +3,11 @@ from random import shuffle
 from operator import itemgetter
 import sys
 
+
+
 class Prepare:
 
-    global player_hand1, player_hand2, player_hand3, player_hand4, palette1, palette2, palette3, palette4
+    global player_hand1, player_hand2, player_hand3, player_hand4, palette1, palette2, palette3, palette4, canvas, paletts, deck
     player_hand1 = []
     player_hand2 = []
     player_hand3 = []
@@ -14,6 +16,9 @@ class Prepare:
     palette2 = []
     palette3 = []
     palette4 = []
+    canvas = []
+    deck = []
+    paletts = palette1 + palette2 + palette3 + palette4
 
     """ Generate start deck
 
@@ -63,39 +68,86 @@ class Prepare:
         print("player_hand1")
         print(player_hand1)
         print(palette1)
+        print("*****************")
         print("player_hand2")
         print(player_hand2)
         print(palette2)
+        print("*****************")
         print("player_hand3")
         print(player_hand3)
         print(palette3)
+        print("*****************")
         print("player_hand4")
         print(player_hand4)
         print(palette4)
-        print(len(deck))
-        Prepare.verify_winner()
+        print("*****************")
 
+        return deck
+
+
+    """Verify cards on each paletts with number and color"""
     def verify_winner():
 
         same_values = []
         paletts = palette1 + palette2 + palette3 + palette4
+        # paletts = [(4, '3Blue'), (4, '4Green'), (4, '7Red'), (2, '6Orange')]
 
-        winner1 = max(paletts, key=itemgetter(0))[0]
+        # verify which card has the higest number
+        winner1 = max(paletts, key=itemgetter(0))
 
+        # verify which card has the higest color
         for j in range(len(paletts)):
-            if paletts[j][0] == winner1:
-                same_values = paletts[j]
-                # print("same value")
-                # print(same_values)
+            if paletts[j][0] == winner1[0]:
+                same_values.append(paletts[j])
+                print("same value")
+                print(same_values)
+                print(len(same_values))
 
         if len(same_values) > 1:
             winner2 = max(same_values, key=itemgetter(1))
+        else:
+            winner2 = winner1
+
+        # verify wich player has the higest card
+        winner_player = paletts.index(winner2) + 1
 
         print(paletts)
         print("----")
-        print(winner1)
-        print("----")
         print(winner2)
+        print("----")
+        print(winner_player)
+
+        return winner_player
+
+
+
+
+    def next_player(players, winner_player):
+
+        if players > winner_player:
+            next_player = winner_player + 1
+        else:
+            next_player = 1
+
+        hand = globals()['player_hand%s' % next_player]
+        palette = globals()['palette%s' % next_player]
+
+        return next_player, hand, palette
+
+
+    def add_card_to_palette(hand, palette, deck):
+
+        number = input("Którą kartę chcesz zagrać z ręki do palety (numer karty): ")
+        color_number = input("Którą kartę chcesz zagrać z ręki do palety (numer koloru): ")
+
+
+
+        print(test[:1])
+        print(hand)
+        print(palette)
+
+
+
 
 
 
