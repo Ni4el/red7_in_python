@@ -38,9 +38,9 @@ class Prepare:
 
         # draw seven cards
         palette = 7
-        amount_players = palette * players
+        cards_count = palette * players
 
-        for i in range(amount_players):
+        for i in range(cards_count):
             # print(deck[0][0], "of", deck[0][1])
             if i < 7:
                 player_hand1.append(deck[0])
@@ -135,18 +135,46 @@ class Prepare:
         return next_player, hand, palette
 
 
-    def add_card_to_palette(hand, palette, deck):
+    def add_card(hand, palette, pal = True, both = False):
 
-        number = input("Którą kartę chcesz zagrać z ręki do palety (numer karty): ")
-        color_number = input("Którą kartę chcesz zagrać z ręki do palety (numer koloru): ")
+            wrong_number = "Nie masz takiej karty"
+
+            if pal:
+                text = "do palety"
+                card = palette
+            else:
+                text = "na tło"
+                card = canvas
+
+            number = input("Którą kartę chcesz zagrać z ręki "+text+" (numer karty): ")
+            if int(number) not in range(1,4):
+                print(wrong_number)
+
+            color_number = input("Którą kartę chcesz zagrać z ręki "+text+" (numer koloru): ")
+            if int(color_number) not in range(1, 4):
+                print(wrong_number)
+
+
+            for i in hand:
+                if int(number) == i[0]:
+                    if color_number == i[1][:1]:
+                        palette.append(i)
+                        print(i)
+                        print(card)
+                        card.remove(i)
+
+            print(card)
+            print(palette)
+
+            if both == True:
+                return Prepare.add_card(hand, palette, False, False)
 
 
 
-        print(test[:1])
-        print(hand)
-        print(palette)
+    def verify_rule():
 
-
+        print("Canvas")
+        print(canvas)
 
 
 

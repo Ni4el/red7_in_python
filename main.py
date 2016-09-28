@@ -54,15 +54,21 @@ def move(deck):
                  "4. Poddaje się \n")
 
     if option == "1":
-        print("1")
+        Prepare.add_card(hand, palette, False)
     elif option == "2":
-        Prepare.add_card_to_palette(hand, palette, deck)
+        Prepare.add_card(hand, palette)
     elif option == "3":
-        print("3")
+        Prepare.add_card(hand, palette, True, True)
     elif option == "4":
-        print("4")
+        print("Przegrałeś")
     else:
         print("Wrong number")
+
+    verify_rule = Prepare.verify_rule()
+    # verify_cards = Prepare.verify_winner()
+    # if verify_cards is True:
+    #     Prepare.next_player(players, winner_player)
+
 
 
 
