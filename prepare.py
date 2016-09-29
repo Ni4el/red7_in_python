@@ -1,9 +1,15 @@
+#!/usr/bin/python
+
 from itertools import product
 from random import shuffle
 from operator import itemgetter
 import sys
 
-
+class Helper:
+    players = 2
+    canvas = []
+    # canvas = [("2", "3green")]
+    deck = []
 
 class Prepare:
 
@@ -16,9 +22,6 @@ class Prepare:
     palette2 = []
     palette3 = []
     palette4 = []
-    CANVAS = []
-    deck = []
-    paletts = palette1 + palette2 + palette3 + palette4
 
     """ Generate start deck
 
@@ -27,62 +30,58 @@ class Prepare:
         Generate one card to each palette
     """
     def generate_start_cards(players):
+        Helper.players = players
 
         # make a deck of cards
-        deck = list(product(range(0, 7), ['7Red', '6Orange', '5Yellow', '4Green', '3Blue', '2Indygo', '1Purple']))
+        deck = list(product(range(1, 8), ['7Red', '6Orange', '5Yellow', '4Green', '3Blue', '2Indygo', '1Purple']))
         # deck = list(product(range(0, 7), range(0, 7)))
 
         # shuffle the cards
         shuffle(deck)
+        # print(len(deck))
         # sys.exit(deck)
 
         # draw seven cards
-        palette = 7
-        cards_count = palette * players
+        count = 1
+        start_deck = 7
+        cards_count = start_deck * players
+
 
         for i in range(cards_count):
             # print(deck[0][0], "of", deck[0][1])
-            if i < 7:
-                player_hand1.append(deck[0])
-                if i == 6:
-                    palette1.append(deck[0])
-                    del deck[0]
-            elif 14 > i > 6:
-                player_hand2.append(deck[0])
-                if i == 13:
-                    palette2.append(deck[0])
-                    del deck[0]
-            elif 21 > i > 13:
-                player_hand3.append(deck[0])
-                if i == 20:
-                    palette3.append(deck[0])
-                    del deck[0]
-            elif 28 > i > 20:
-                player_hand4.append(deck[0])
-                if i == 27:
-                    palette4.append(deck[0])
-                    del deck[0]
+            if i % 7 == 0:
+                player_hand = globals()['player_hand%s' % count]
+                front = globals()['palette%s' % count]
+                count += 1
+                front.append(deck[1])
+                del deck[1]
+                player_hand.append(deck[0])
+            else:
+                player_hand.append(deck[0])
+
             del deck[0]
 
+        Helper.deck = deck
 
-        print("player_hand1")
-        print(player_hand1)
-        print(palette1)
-        print("*****************")
-        print("player_hand2")
-        print(player_hand2)
-        print(palette2)
-        print("*****************")
-        print("player_hand3")
-        print(player_hand3)
-        print(palette3)
-        print("*****************")
-        print("player_hand4")
-        print(player_hand4)
-        print(palette4)
-        print("*****************")
-
-        return deck
+        # print("player_hand1")
+        # print(player_hand1)
+        # print(palette1)
+        # print("*****************")
+        # print("player_hand2")
+        # print(player_hand2)
+        # print(palette2)
+        # print("*****************")
+        # print("player_hand3")
+        # print(player_hand3)
+        # print(palette3)
+        # print("*****************")
+        # print("player_hand4")
+        # print(player_hand4)
+        # print(palette4)
+        # print("*****************")
+        # print(len(deck))
+        if len(deck) == 49-cards_count-players:
+            return True
 
 
     """Verify cards on each paletts with number and color"""
@@ -119,12 +118,9 @@ class Prepare:
 
         return winner_player
 
+    def next_player(PLAYERS, winner_player):
 
-
-
-    def next_player(players, winner_player):
-
-        if players > winner_player:
+        if PLAYERS > winner_player:
             next_player = winner_player + 1
         else:
             next_player = 1
@@ -177,24 +173,55 @@ class Prepare:
 
 
     def verify_rule():
+        option = {
+            '7Red': Prepare.verify_paletts(7),
+            '6Orange': Prepare.verify_paletts(6),
+            '5Yellow': Prepare.verify_paletts(5),
+            '4Green': Prepare.verify_paletts(4),
+            '3Blue': Prepare.verify_paletts(3),
+            '2Indygo': Prepare.verify_paletts(2),
+            '1Purple': Prepare.verify_paletts(1),
+        }
 
-        print("Canvas")
-        print(CANVAS[-1])
+        canvas = Helper.canvas
 
-        actual_rule = CANVAS[-1][1]
-        Prepare.f(actual_rule)
+        if bool(canvas):
+            print("Canvas")
+            print(canvas)
+            actual_rule = canvas[1]
+            Prepare.rules(actual_rule)
+        else:
+            option['7Red']()
 
-    """Function used like switch in another programming language"""
-    def f(x):
-        return {
-            'a': 1,
-            'b': 2,
-        }[x]
-    # }.get(x, 9)    # 9 is default if x not found
+        # print("Canvas")
+        # print(canvas)
+
+    """Function used like switch in another programming language
+
+        Switch used to choose common rule in game.
+
+    """
+    # def rules(x):
 
 
 
+    def verify_paletts(rule):
 
+        print(rule)
+        print(Helper.players)
+
+        # def next_player(players, winner_player):
+        #
+        #     if players > winner_player:
+        #         next_player = winner_player + 1
+        #     else:
+        #         next_player = 1
+        #
+        #     hand = globals()['player_hand%s' % next_player]
+        #     palette = globals()['palette%s' % next_player]
+        #
+        #     return next_player, hand, palette
+        #
 
 
 

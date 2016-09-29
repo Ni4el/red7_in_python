@@ -2,19 +2,21 @@
 
 from prepare import Prepare
 
-global players
+# global players
 
-players = 0
+class Helper:
+    players = 0
 
 def hello():
     print("Witajcie w Red7 \n ************")
     players = input("Proszę podać ilu będzie graczy ")
+    players = int(players)
 
-
+    Helper.players = players
     # for i in range(100):
     #     print(i)
 
-    if  4 >= int(players) >= 2:
+    if 4 >= int(players) >= 2:
 
         # player1 = input("Podaj imię pierwszego gracza: ")
         # player2 = input("Podaj imię drugiego gracza: ")
@@ -25,20 +27,21 @@ def hello():
         #     player3 = input("Podaj imię trzeciego gracza: ")
         #     player4 = input("Podaj imię czwartego gracza: ")
 
-        deck = Prepare.generate_start_cards(int(players))
+        if Prepare.generate_start_cards(players):
+            Prepare.verify_rule()
 
     #     print("A więc grajmy!")
     # elif int(players) == 1:
     #     print("Troche nas za mało do gry :(")
     # else:
     #     print("To chyba nie jest ilosc graczy :(")
-        return deck
+
 
 
 def move(deck):
 
     winner_player = Prepare.verify_winner()
-    next_player, hand, palette = Prepare.next_player(players, winner_player)
+    next_player, hand, palette = Prepare.next_player(Helper.players, winner_player)
 
 
     print('Następny jest gracz ' + str(next_player))
@@ -69,14 +72,9 @@ def move(deck):
     #     Prepare.next_player(players, winner_player)
 
 
-
-
-
-def game():
-
-    deck = hello()
-    move(deck);
-
-
-
-game()
+# def game():
+#     deck = hello()
+#     # move(deck);
+#
+# game()
+hello()
