@@ -14,7 +14,6 @@ def hello():
     # for i in range(100):
     #     print(i)
 
-
     if  4 >= int(players) >= 2:
 
         # player1 = input("Podaj imię pierwszego gracza: ")
@@ -54,9 +53,9 @@ def move(deck):
                  "4. Poddaje się \n")
 
     if option == "1":
-        Prepare.add_card(hand, palette, False)
+        Prepare.add_card(hand, palette, False, False)
     elif option == "2":
-        Prepare.add_card(hand, palette)
+        Prepare.add_card(hand, palette, True, False)
     elif option == "3":
         Prepare.add_card(hand, palette, True, True)
     elif option == "4":

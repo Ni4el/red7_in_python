@@ -7,7 +7,7 @@ import sys
 
 class Prepare:
 
-    global player_hand1, player_hand2, player_hand3, player_hand4, palette1, palette2, palette3, palette4, canvas, paletts, deck
+    global player_hand1, player_hand2, player_hand3, player_hand4, palette1, palette2, palette3, palette4, CANVAS, paletts, deck
     player_hand1 = []
     player_hand2 = []
     player_hand3 = []
@@ -16,7 +16,7 @@ class Prepare:
     palette2 = []
     palette3 = []
     palette4 = []
-    canvas = []
+    CANVAS = []
     deck = []
     paletts = palette1 + palette2 + palette3 + palette4
 
@@ -144,27 +144,32 @@ class Prepare:
                 card = palette
             else:
                 text = "na tło"
-                card = canvas
+                card = CANVAS
 
             number = input("Którą kartę chcesz zagrać z ręki "+text+" (numer karty): ")
-            if int(number) not in range(1,4):
+            if int(number) not in range(1, 7):
+                print(number)
                 print(wrong_number)
 
             color_number = input("Którą kartę chcesz zagrać z ręki "+text+" (numer koloru): ")
-            if int(color_number) not in range(1, 4):
+            if int(color_number) not in range(1, 7):
                 print(wrong_number)
 
 
             for i in hand:
                 if int(number) == i[0]:
                     if color_number == i[1][:1]:
-                        palette.append(i)
+                        card.append(i)
+                        print("wbrana karta")
                         print(i)
-                        print(card)
-                        card.remove(i)
+                        hand.remove(i)
 
-            print(card)
+            print("ręka")
+            print(hand)
+            print("paleta")
             print(palette)
+            print("Canvas")
+            print(CANVAS)
 
             if both == True:
                 return Prepare.add_card(hand, palette, False, False)
@@ -174,7 +179,20 @@ class Prepare:
     def verify_rule():
 
         print("Canvas")
-        print(canvas)
+        print(CANVAS[-1])
+
+        actual_rule = CANVAS[-1][1]
+        Prepare.f(actual_rule)
+
+    """Function used like switch in another programming language"""
+    def f(x):
+        return {
+            'a': 1,
+            'b': 2,
+        }[x]
+    # }.get(x, 9)    # 9 is default if x not found
+
+
 
 
 
