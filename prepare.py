@@ -8,20 +8,13 @@ import sys
 class Helper:
     players = 2
     canvas = []
-    # canvas = [("2", "3green")]
     deck = []
+    for i in range(1,5):
+        globals()['player_hand%s' % i] = []
+        globals()['palette%s' % i] = []
+
 
 class Prepare:
-
-    global player_hand1, player_hand2, player_hand3, player_hand4, palette1, palette2, palette3, palette4, CANVAS, paletts, deck
-    player_hand1 = []
-    player_hand2 = []
-    player_hand3 = []
-    player_hand4 = []
-    palette1 = []
-    palette2 = []
-    palette3 = []
-    palette4 = []
 
     """ Generate start deck
 
@@ -33,7 +26,7 @@ class Prepare:
         Helper.players = players
 
         # make a deck of cards
-        deck = list(product(range(1, 8), ['7Red', '6Orange', '5Yellow', '4Green', '3Blue', '2Indygo', '1Purple']))
+        deck = list(product(range(1, 8), ['7Red', '6Orange', '5Yellow', '4Green', '3Blue', '2Indigo', '1Violet']))
         # deck = list(product(range(0, 7), range(0, 7)))
 
         # shuffle the cards
@@ -63,60 +56,26 @@ class Prepare:
 
         Helper.deck = deck
 
-        # print("player_hand1")
-        # print(player_hand1)
-        # print(palette1)
-        # print("*****************")
-        # print("player_hand2")
-        # print(player_hand2)
-        # print(palette2)
-        # print("*****************")
-        # print("player_hand3")
-        # print(player_hand3)
-        # print(palette3)
-        # print("*****************")
-        # print("player_hand4")
-        # print(player_hand4)
-        # print(palette4)
-        # print("*****************")
-        # print(len(deck))
+        print("player_hand1")
+        print(player_hand1)
+        print(palette1)
+        print("*****************")
+        print("player_hand2")
+        print(player_hand2)
+        print(palette2)
+        print("*****************")
+        print("player_hand3")
+        print(player_hand3)
+        print(palette3)
+        print("*****************")
+        print("player_hand4")
+        print(player_hand4)
+        print(palette4)
+        print("*****************")
+        print(len(deck))
         if len(deck) == 49-cards_count-players:
             return True
 
-
-    """Verify cards on each paletts with number and color"""
-    def verify_winner():
-
-        same_values = []
-        paletts = palette1 + palette2 + palette3 + palette4
-        # paletts = [(4, '3Blue'), (4, '4Green'), (4, '7Red'), (2, '6Orange')]
-
-        # verify which card has the higest number
-        winner1 = max(paletts, key=itemgetter(0))
-
-        # verify which card has the higest color
-        for j in range(len(paletts)):
-            if paletts[j][0] == winner1[0]:
-                same_values.append(paletts[j])
-                print("same value")
-                print(same_values)
-                print(len(same_values))
-
-        if len(same_values) > 1:
-            winner2 = max(same_values, key=itemgetter(1))
-        else:
-            winner2 = winner1
-
-        # verify wich player has the higest card
-        winner_player = paletts.index(winner2) + 1
-
-        print(paletts)
-        print("----")
-        print(winner2)
-        print("----")
-        print(winner_player)
-
-        return winner_player
 
     def next_player(PLAYERS, winner_player):
 
@@ -140,7 +99,7 @@ class Prepare:
                 card = palette
             else:
                 text = "na tło"
-                card = CANVAS
+                card = canvas
 
             number = input("Którą kartę chcesz zagrać z ręki "+text+" (numer karty): ")
             if int(number) not in range(1, 7):
@@ -170,61 +129,66 @@ class Prepare:
             if both == True:
                 return Prepare.add_card(hand, palette, False, False)
 
-
-
     def verify_rule():
-        option = {
-            '7Red': Prepare.verify_paletts(7),
-            '6Orange': Prepare.verify_paletts(6),
-            '5Yellow': Prepare.verify_paletts(5),
-            '4Green': Prepare.verify_paletts(4),
-            '3Blue': Prepare.verify_paletts(3),
-            '2Indygo': Prepare.verify_paletts(2),
-            '1Purple': Prepare.verify_paletts(1),
-        }
 
-        canvas = Helper.canvas
+        canvas = ('1Violet')
+        # canvas = Helper.canvas[1]
+        print("Canvas")
+        print(canvas)
 
         if bool(canvas):
-            print("Canvas")
-            print(canvas)
-            actual_rule = canvas[1]
-            Prepare.rules(actual_rule)
+            if canvas == '7Red':
+                Prepare.rule_the_higest()
+            elif canvas == '6Orange':
+                Prepare.rule_the_higest()
+            elif canvas == '5Yellow':
+                Prepare.rule_the_higest()
+            elif canvas == '4Green':
+                Prepare.rule_the_higest()
+            elif canvas == '3Blue':
+                Prepare.rule_the_higest()
+            elif canvas == '2Indigo':
+                Prepare.rule_the_higest()
+            elif canvas == '1Violet':
+                Prepare.rule_below_4()
+            else:
+                "Error"
         else:
-            option['7Red']()
-
-        # print("Canvas")
-        # print(canvas)
-
-    """Function used like switch in another programming language
-
-        Switch used to choose common rule in game.
-
-    """
-    # def rules(x):
+            Prepare.rule_the_higest()
 
 
 
-    def verify_paletts(rule):
+    """Rule 7: paletts with the higest card"""
 
-        print(rule)
-        print(Helper.players)
+    def rule_the_higest():
 
-        # def next_player(players, winner_player):
-        #
-        #     if players > winner_player:
-        #         next_player = winner_player + 1
-        #     else:
-        #         next_player = 1
-        #
-        #     hand = globals()['player_hand%s' % next_player]
-        #     palette = globals()['palette%s' % next_player]
-        #
-        #     return next_player, hand, palette
-        #
+        winners = []
+        # verify which card has the higest color
+        for j in range(1, Helper.players+1):
+            player_hand = globals()['player_hand%s' % j]
+            winners.append(max(player_hand, key=itemgetter(0,1)))
+            # print("kolejka")
+            # print(player_hand)
+            # print(winners)
 
+        return winners.index(max(winners, key=itemgetter(0, 1)))+1
 
+    """Rule 1: most cards below 4"""
 
+    def rule_below_4():
 
+        winners = []
 
+        for j in range(1, Helper.players + 1):
+            player_hand = globals()['player_hand%s' % j]
+
+            for k in player_hand:
+                # if player_hand[i][0] < 3:
+                #     winners.append(player_hand[j])
+
+                print("kolejka")
+                print(player_hand[k])
+            print("")
+
+        # return winners.index(max(winners, key=itemgetter(0, 1))) + 1
 
