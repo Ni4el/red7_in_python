@@ -3,6 +3,7 @@
 from itertools import product
 from random import shuffle
 from operator import itemgetter
+
 import sys
 
 class Helper:
@@ -73,6 +74,7 @@ class Prepare:
         print(palette4)
         print("*****************")
         print(len(deck))
+        print("###########################")
         if len(deck) == 49-cards_count-players:
             return True
 
@@ -124,17 +126,16 @@ class Prepare:
             print("paleta")
             print(palette)
             print("Canvas")
-            print(CANVAS)
 
             if both == True:
                 return Prepare.add_card(hand, palette, False, False)
 
     def verify_rule():
 
-        canvas = ('1Violet')
+        canvas = ('4Green')
         # canvas = Helper.canvas[1]
-        print("Canvas")
-        print(canvas)
+        # print("Canvas")
+        # print(canvas)
 
         if bool(canvas):
             if canvas == '7Red':
@@ -146,9 +147,9 @@ class Prepare:
             elif canvas == '4Green':
                 Prepare.rule_the_higest()
             elif canvas == '3Blue':
-                Prepare.rule_the_higest()
+                Prepare.rule_diffrent_colors()
             elif canvas == '2Indigo':
-                Prepare.rule_the_higest()
+                Prepare.rule_cards_that_form_run()
             elif canvas == '1Violet':
                 Prepare.rule_below_4()
             else:
@@ -156,7 +157,122 @@ class Prepare:
         else:
             Prepare.rule_the_higest()
 
+    """Rule 1: most cards below 4"""
 
+    def rule_below_4():
+
+        winners = []
+        compatible = []
+
+        #invoke to players paletts
+        for j in range(1, Helper.players + 1):
+            player_hand = globals()['player_hand%s' % j]
+            #find cards below 4, count, and assign to common list winners
+            for i in range(len(player_hand)):
+                if player_hand[i][0] < 4:
+                    compatible.append(player_hand[i])
+            # print(player_hand)
+            winners.append((len(compatible), max(compatible, key=itemgetter(0, 1))))
+            compatible = []
+
+        return winners.index(max(winners, key=itemgetter(0, 1))) + 1
+
+    """Rule 2: CARDS THAT FORM A RUN """
+
+    def rule_cards_that_form_run():
+
+        sequence = []
+        sequences = {}
+        card = 0
+        l = 1
+        # verify which card has the higest color
+        for j in range(1, Helper.players+1):
+            player_hand = globals()['player_hand%s' % j]
+            sorted_hand = sorted(player_hand, key=itemgetter(0))
+            for i in range(len(sorted_hand) + 1):
+                if i == 0:
+                    card = sorted_hand[i][0]
+                elif i == 7:
+                    sequence.append([l, card])
+                    l = 1
+                else:
+                    if sorted_hand[i][0] == (card + 1):
+                        card = sorted_hand[i][0]
+                        l += 1
+                    else:
+                        sequence.append([l, card])
+                        card = sorted_hand[i][0]
+                        l = 1
+
+            # save the higest sequence of card
+            sequences["player{0}".format(j)] = max(sequence, key=itemgetter(0, 1))
+            # print("ręka")
+            # print(sorted_hand)
+            # print("sekwencja")
+            # print(sequence)
+            sequence = []
+        # verify which player has the longes sequence
+        winners = max(sequences.values(), key=itemgetter(0, 1))
+
+        winner = list(sequences.keys())[list(sequences.values()).index(winners)]
+        winner = winner[-1]
+
+        # print("kozak")
+        # print(sequences)
+        # print(winners)
+        """SPR. gdy dwóch graczy ma taka sama sekwencje i najwyzsza karte"""
+
+        return winner
+
+    """Rule 3: cards of all diffrent colors"""
+
+    def rule_diffrent_colors():
+
+        winners = []
+        compatible = []
+        cards = []
+
+        # invoke to players paletts
+        for j in range(1, Helper.players + 1):
+            player_hand = globals()['player_hand%s' % j]
+            # find cards below 4, count, and assign to common list winners
+            # print(player_hand)
+            for i in range(len(player_hand)):
+                if player_hand[i][1] not in compatible:
+                    compatible.append(player_hand[i][1])
+
+            # print("%%%%%%%")
+            # print(compatible)
+            cards.append([len(compatible), max(compatible)])
+            compatible = []
+        # print("^%^%^%$^$%")
+        # print(cards)
+        return cards.index(max(cards, key=itemgetter(0, 1))) + 1
+
+    """Rule 4: most even cards"""
+
+    def rule_even_cards():
+
+        winners = []
+        compatible = []
+        cards = []
+
+        # invoke to players paletts
+        for j in range(1, Helper.players + 1):
+            player_hand = globals()['player_hand%s' % j]
+            # find cards below 4, count, and assign to common list winners
+            # print(player_hand)
+            for i in range(len(player_hand)):
+                print(player_hand[i])
+                if player_hand[i][0] % 2:
+                    compatible.append(player_hand[i])
+
+            print("%%%%%%%")
+            print(compatible)
+            compatible = []
+        print("^%^%^%$^$%")
+        print(cards)
+        return cards.index(max(cards, key=itemgetter(0, 1))) + 1
 
     """Rule 7: paletts with the higest card"""
 
@@ -166,29 +282,9 @@ class Prepare:
         # verify which card has the higest color
         for j in range(1, Helper.players+1):
             player_hand = globals()['player_hand%s' % j]
-            winners.append(max(player_hand, key=itemgetter(0,1)))
+            winners.append(max(player_hand, key=itemgetter(0, 1)))
             # print("kolejka")
             # print(player_hand)
             # print(winners)
 
-        return winners.index(max(winners, key=itemgetter(0, 1)))+1
-
-    """Rule 1: most cards below 4"""
-
-    def rule_below_4():
-
-        winners = []
-
-        for j in range(1, Helper.players + 1):
-            player_hand = globals()['player_hand%s' % j]
-
-            for k in player_hand:
-                # if player_hand[i][0] < 3:
-                #     winners.append(player_hand[j])
-
-                print("kolejka")
-                print(player_hand[k])
-            print("")
-
-        # return winners.index(max(winners, key=itemgetter(0, 1))) + 1
-
+        return winners.index(max(winners, key=itemgetter(0, 1))) + 1

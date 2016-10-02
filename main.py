@@ -16,7 +16,7 @@ def hello():
     # for i in range(100):
     #     print(i)
 
-    if 4 >= int(players) >= 2:
+    # if 4 >= int(players) >= 2:
 
         # player1 = input("Podaj imię pierwszego gracza: ")
         # player2 = input("Podaj imię drugiego gracza: ")
@@ -27,8 +27,8 @@ def hello():
         #     player3 = input("Podaj imię trzeciego gracza: ")
         #     player4 = input("Podaj imię czwartego gracza: ")
 
-        if Prepare.generate_start_cards(players):
-            Prepare.verify_rule()
+    if Prepare.generate_start_cards(players):
+        Prepare.verify_rule()
 
     #     print("A więc grajmy!")
     # elif int(players) == 1:
