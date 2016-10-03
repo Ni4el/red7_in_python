@@ -133,7 +133,7 @@ class Prepare:
 
     def verify_rule():
 
-        canvas = ('5Yellow')
+        canvas = ('6Orange')
         # canvas = Helper.canvas[1]
         # print("Canvas")
         # print(canvas)
@@ -142,7 +142,7 @@ class Prepare:
             if canvas == '7Red':
                 Prepare.rule_the_higest()
             elif canvas == '6Orange':
-                Prepare.rule_the_higest()
+                Prepare.rule_one_number()
             elif canvas == '5Yellow':
                 Prepare.rule_one_color()
             elif canvas == '4Green':
@@ -272,7 +272,13 @@ class Prepare:
         # print(winners)
         return winners.index(max(winners, key=itemgetter(0, 1))) + 1
 
-    """Rule 5: cards of one color"""
+    """Rule 5: cards of one color
+
+        summary: list(the longest sequence, color, the higest number)
+
+        return
+        number of player who wins
+    """
 
     def rule_one_color():
 
@@ -283,37 +289,67 @@ class Prepare:
         # invoke to players paletts
         for j in range(1, Helper.players + 1):
             player_hand = globals()['player_hand%s' % j]
-            # find cards below 4, count, and assign to common list winners
-            player_hand = [(6, '6Orange'), (4, '4Green'), (2, '7test'), (3, '34f'), (3, '7test'), (1, '4Green'),
-                           (2, '6Orange')]
-
             for i in range(len(player_hand)):
                 compatible.append(player_hand[i][1])
 
             print(player_hand)
-            print(compatible)
             pogrupowane = Counter(compatible)
             colors = max(pogrupowane.items(), key=itemgetter(1, 0))
-            print(";;;;;")
+            print("NAJCZĘSTSZY KOLOR")
             print(colors)
             values = []
             indeksy = [item for item, v in enumerate(player_hand) if v[1] == colors[0]]
+            print("indeksy koloru w tablicy")
             print(indeksy)
             for k in range(len(indeksy)):
                 values.append(player_hand[indeksy[k]])
-
-
-            print(values)
-
-
-            # print(max(pogrupowane, key=itemgetter(0)))
-            # compatible.append(player_hand[i])
-            # winners.append((len(compatible), max(compatible, key=itemgetter(0, 1))))
+            winners.append((colors[1], colors[0]), max(values, key=itemgetter(0, 1))[0])
+            print(winners)
             compatible = []
             print("^%^%^%$^$%")
 
-        # print(winners)
-        # return winners.index(max(winners, key=itemgetter(0, 1))) + 1
+        return winners.index(max(winners, key=itemgetter(0, 1, 2))) + 1
+
+    """Rule 6: cards of one number
+
+            summary: list(the longest sequence, color, the higest number)
+
+            return
+            number of player who wins
+        """
+
+    def rule_one_number():
+
+        winners = []
+        compatible = []
+        cards = []
+
+        # invoke to players paletts
+        for j in range(1, Helper.players + 1):
+            player_hand = globals()['player_hand%s' % j]
+            for i in range(len(player_hand)):
+                compatible.append(player_hand[i][0])
+
+            print(player_hand)
+            pogrupowane = Counter(compatible)
+            print("pogrupowane numery")
+            print(pogrupowane)
+            colors = max(pogrupowane.items(), key=itemgetter(1, 0))
+            print("NAJCZĘSTSZY numer")
+            print(colors)
+
+            values = []
+            indeksy = [item for item, v in enumerate(player_hand) if v[0] == colors[0]]
+            print("indeksy koloru w tablicy")
+            print(indeksy)
+            for k in range(len(indeksy)):
+                values.append(player_hand[indeksy[k]])
+            winners.append((colors[1], colors[0], max(values, key=itemgetter(0, 1))[1],))
+            print(winners)
+            compatible = []
+            print("^%^%^%$^$%")
+
+        return winners.index(max(winners, key=itemgetter(0, 1, 2))) + 1
 
     """Rule 7: paletts with the higest card"""
 
