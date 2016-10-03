@@ -3,6 +3,7 @@
 from itertools import product
 from random import shuffle
 from operator import itemgetter
+from collections import Counter
 
 import sys
 
@@ -132,7 +133,7 @@ class Prepare:
 
     def verify_rule():
 
-        canvas = ('4Green')
+        canvas = ('5Yellow')
         # canvas = Helper.canvas[1]
         # print("Canvas")
         # print(canvas)
@@ -143,9 +144,9 @@ class Prepare:
             elif canvas == '6Orange':
                 Prepare.rule_the_higest()
             elif canvas == '5Yellow':
-                Prepare.rule_the_higest()
+                Prepare.rule_one_color()
             elif canvas == '4Green':
-                Prepare.rule_the_higest()
+                Prepare.rule_even_cards()
             elif canvas == '3Blue':
                 Prepare.rule_diffrent_colors()
             elif canvas == '2Indigo':
@@ -261,18 +262,58 @@ class Prepare:
         for j in range(1, Helper.players + 1):
             player_hand = globals()['player_hand%s' % j]
             # find cards below 4, count, and assign to common list winners
-            # print(player_hand)
             for i in range(len(player_hand)):
-                print(player_hand[i])
-                if player_hand[i][0] % 2:
+                if (player_hand[i][0] % 2) == 0:
                     compatible.append(player_hand[i])
 
-            print("%%%%%%%")
-            print(compatible)
+            winners.append((len(compatible), max(compatible, key=itemgetter(0, 1))))
             compatible = []
-        print("^%^%^%$^$%")
-        print(cards)
-        return cards.index(max(cards, key=itemgetter(0, 1))) + 1
+        # print("^%^%^%$^$%")
+        # print(winners)
+        return winners.index(max(winners, key=itemgetter(0, 1))) + 1
+
+    """Rule 5: cards of one color"""
+
+    def rule_one_color():
+
+        winners = []
+        compatible = []
+        cards = []
+
+        # invoke to players paletts
+        for j in range(1, Helper.players + 1):
+            player_hand = globals()['player_hand%s' % j]
+            # find cards below 4, count, and assign to common list winners
+            player_hand = [(6, '6Orange'), (4, '4Green'), (2, '7test'), (3, '34f'), (3, '7test'), (1, '4Green'),
+                           (2, '6Orange')]
+
+            for i in range(len(player_hand)):
+                compatible.append(player_hand[i][1])
+
+            print(player_hand)
+            print(compatible)
+            pogrupowane = Counter(compatible)
+            colors = max(pogrupowane.items(), key=itemgetter(1, 0))
+            print(";;;;;")
+            print(colors)
+            values = []
+            indeksy = [item for item, v in enumerate(player_hand) if v[1] == colors[0]]
+            print(indeksy)
+            for k in range(len(indeksy)):
+                values.append(player_hand[indeksy[k]])
+
+
+            print(values)
+
+
+            # print(max(pogrupowane, key=itemgetter(0)))
+            # compatible.append(player_hand[i])
+            # winners.append((len(compatible), max(compatible, key=itemgetter(0, 1))))
+            compatible = []
+            print("^%^%^%$^$%")
+
+        # print(winners)
+        # return winners.index(max(winners, key=itemgetter(0, 1))) + 1
 
     """Rule 7: paletts with the higest card"""
 
