@@ -13,8 +13,6 @@ def hello():
     players = int(players)
 
     Helper.players = players
-    # for i in range(100):
-    #     print(i)
 
     # if 4 >= int(players) >= 2:
 
@@ -28,7 +26,7 @@ def hello():
         #     player4 = input("Podaj imię czwartego gracza: ")
 
     if Prepare.generate_start_cards(players):
-        Prepare.verify_rule()
+        move()
 
     #     print("A więc grajmy!")
     # elif int(players) == 1:
@@ -38,9 +36,9 @@ def hello():
 
 
 
-def move(deck):
+def move():
 
-    winner_player = Prepare.verify_winner()
+    winner_player = Prepare.verify_rule()
     next_player, hand, palette = Prepare.next_player(Helper.players, winner_player)
 
 

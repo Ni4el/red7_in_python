@@ -41,7 +41,6 @@ class Prepare:
         start_deck = 7
         cards_count = start_deck * players
 
-
         for i in range(cards_count):
             # print(deck[0][0], "of", deck[0][1])
             if i % 7 == 0:
@@ -76,6 +75,8 @@ class Prepare:
         print("*****************")
         print(len(deck))
         print("###########################")
+
+        """Check if correct number of card in deck"""
         if len(deck) == 49-cards_count-players:
             return True
 
@@ -102,7 +103,7 @@ class Prepare:
                 card = palette
             else:
                 text = "na tło"
-                card = canvas
+                card = Helper.canvas
 
             number = input("Którą kartę chcesz zagrać z ręki "+text+" (numer karty): ")
             if int(number) not in range(1, 7):
@@ -133,30 +134,36 @@ class Prepare:
 
     def verify_rule():
 
-        canvas = ('6Orange')
+        canvas = ('1Violet')
         # canvas = Helper.canvas[1]
         # print("Canvas")
         # print(canvas)
 
         if bool(canvas):
             if canvas == '7Red':
-                Prepare.rule_the_higest()
+                result = Prepare.rule_the_higest()
             elif canvas == '6Orange':
-                Prepare.rule_one_number()
+                result = Prepare.rule_one_number()
             elif canvas == '5Yellow':
-                Prepare.rule_one_color()
+                result = Prepare.rule_one_color()
             elif canvas == '4Green':
-                Prepare.rule_even_cards()
+                result = Prepare.rule_even_cards()
             elif canvas == '3Blue':
-                Prepare.rule_diffrent_colors()
+                result = Prepare.rule_diffrent_colors()
             elif canvas == '2Indigo':
-                Prepare.rule_cards_that_form_run()
+                result = Prepare.rule_cards_that_form_run()
             elif canvas == '1Violet':
-                Prepare.rule_below_4()
+                result = Prepare.rule_below_4()
             else:
                 "Error"
         else:
-            Prepare.rule_the_higest()
+            result = Prepare.rule_the_higest()
+
+
+        print("result")
+        print(result)
+        return result
+
 
     """Rule 1: most cards below 4"""
 
@@ -174,6 +181,7 @@ class Prepare:
                     compatible.append(player_hand[i])
             # print(player_hand)
             winners.append((len(compatible), max(compatible, key=itemgetter(0, 1))))
+
             compatible = []
 
         return winners.index(max(winners, key=itemgetter(0, 1))) + 1
@@ -303,7 +311,7 @@ class Prepare:
             print(indeksy)
             for k in range(len(indeksy)):
                 values.append(player_hand[indeksy[k]])
-            winners.append((colors[1], colors[0]), max(values, key=itemgetter(0, 1))[0])
+            winners.append((colors[1], colors[0], max(values, key=itemgetter(0, 1))[0]))
             print(winners)
             compatible = []
             print("^%^%^%$^$%")
