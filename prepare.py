@@ -7,6 +7,7 @@ from collections import Counter
 
 import sys
 
+
 class Helper:
     players = 2
     canvas = []
@@ -107,7 +108,6 @@ class Prepare:
 
             number = input("Którą kartę chcesz zagrać z ręki "+text+" (numer karty): ")
             if int(number) not in range(1, 7):
-                print(number)
                 print(wrong_number)
 
             color_number = input("Którą kartę chcesz zagrać z ręki "+text+" (numer koloru): ")
@@ -131,15 +131,19 @@ class Prepare:
 
             if both == True:
                 return Prepare.add_card(hand, palette, False, False)
+            else:
+               return True
 
     def verify_rule():
 
-        canvas = ('1Violet')
-        # canvas = Helper.canvas[1]
-        # print("Canvas")
-        # print(canvas)
+        result = 0
+        #canvas = ('1Violet')
+        canvas = Helper.canvas
+        print("Canvas")
+        print(canvas)
 
         if bool(canvas):
+            canvas = canvas[-1]
             if canvas == '7Red':
                 result = Prepare.rule_the_higest()
             elif canvas == '6Orange':
@@ -174,11 +178,11 @@ class Prepare:
 
         #invoke to players paletts
         for j in range(1, Helper.players + 1):
-            player_hand = globals()['player_hand%s' % j]
+            palette = globals()['palette%s' % j]
             #find cards below 4, count, and assign to common list winners
-            for i in range(len(player_hand)):
-                if player_hand[i][0] < 4:
-                    compatible.append(player_hand[i])
+            for i in range(len(palette)):
+                if palette[i][0] < 4:
+                    compatible.append(palette[i])
             # print(player_hand)
             winners.append((len(compatible), max(compatible, key=itemgetter(0, 1))))
 
@@ -196,27 +200,27 @@ class Prepare:
         l = 1
         # verify which card has the higest color
         for j in range(1, Helper.players+1):
-            player_hand = globals()['player_hand%s' % j]
-            sorted_hand = sorted(player_hand, key=itemgetter(0))
-            for i in range(len(sorted_hand) + 1):
+            palette = globals()['palette%s' % j]
+            sorted_palette = sorted(palette, key=itemgetter(0))
+            for i in range(len(sorted_palette) + 1):
                 if i == 0:
-                    card = sorted_hand[i][0]
+                    card = sorted_palette[i][0]
                 elif i == 7:
                     sequence.append([l, card])
                     l = 1
                 else:
-                    if sorted_hand[i][0] == (card + 1):
-                        card = sorted_hand[i][0]
+                    if sorted_palette[i][0] == (card + 1):
+                        card = sorted_palette[i][0]
                         l += 1
                     else:
                         sequence.append([l, card])
-                        card = sorted_hand[i][0]
+                        card = sorted_palette[i][0]
                         l = 1
 
             # save the higest sequence of card
             sequences["player{0}".format(j)] = max(sequence, key=itemgetter(0, 1))
             # print("ręka")
-            # print(sorted_hand)
+            # print(sorted_palette)
             # print("sekwencja")
             # print(sequence)
             sequence = []
@@ -243,12 +247,12 @@ class Prepare:
 
         # invoke to players paletts
         for j in range(1, Helper.players + 1):
-            player_hand = globals()['player_hand%s' % j]
+            palette = globals()['palette%s' % j]
             # find cards below 4, count, and assign to common list winners
-            # print(player_hand)
-            for i in range(len(player_hand)):
-                if player_hand[i][1] not in compatible:
-                    compatible.append(player_hand[i][1])
+            # print(palette)
+            for i in range(len(palette)):
+                if palette[i][1] not in compatible:
+                    compatible.append(palette[i][1])
 
             # print("%%%%%%%")
             # print(compatible)
@@ -268,11 +272,11 @@ class Prepare:
 
         # invoke to players paletts
         for j in range(1, Helper.players + 1):
-            player_hand = globals()['player_hand%s' % j]
+            palette = globals()['palette%s' % j]
             # find cards below 4, count, and assign to common list winners
-            for i in range(len(player_hand)):
-                if (player_hand[i][0] % 2) == 0:
-                    compatible.append(player_hand[i])
+            for i in range(len(palette)):
+                if (palette[i][0] % 2) == 0:
+                    compatible.append(palette[i])
 
             winners.append((len(compatible), max(compatible, key=itemgetter(0, 1))))
             compatible = []
@@ -296,21 +300,21 @@ class Prepare:
 
         # invoke to players paletts
         for j in range(1, Helper.players + 1):
-            player_hand = globals()['player_hand%s' % j]
-            for i in range(len(player_hand)):
-                compatible.append(player_hand[i][1])
+            palette = globals()['palette%s' % j]
+            for i in range(len(palette)):
+                compatible.append(palette[i][1])
 
-            print(player_hand)
+            print(palette)
             pogrupowane = Counter(compatible)
             colors = max(pogrupowane.items(), key=itemgetter(1, 0))
             print("NAJCZĘSTSZY KOLOR")
             print(colors)
             values = []
-            indeksy = [item for item, v in enumerate(player_hand) if v[1] == colors[0]]
+            indeksy = [item for item, v in enumerate(palette) if v[1] == colors[0]]
             print("indeksy koloru w tablicy")
             print(indeksy)
             for k in range(len(indeksy)):
-                values.append(player_hand[indeksy[k]])
+                values.append(palette[indeksy[k]])
             winners.append((colors[1], colors[0], max(values, key=itemgetter(0, 1))[0]))
             print(winners)
             compatible = []
@@ -334,11 +338,11 @@ class Prepare:
 
         # invoke to players paletts
         for j in range(1, Helper.players + 1):
-            player_hand = globals()['player_hand%s' % j]
-            for i in range(len(player_hand)):
-                compatible.append(player_hand[i][0])
+            palette = globals()['palette%s' % j]
+            for i in range(len(palette)):
+                compatible.append(palette[i][0])
 
-            print(player_hand)
+            print(palette)
             pogrupowane = Counter(compatible)
             print("pogrupowane numery")
             print(pogrupowane)
@@ -347,11 +351,11 @@ class Prepare:
             print(colors)
 
             values = []
-            indeksy = [item for item, v in enumerate(player_hand) if v[0] == colors[0]]
+            indeksy = [item for item, v in enumerate(palette) if v[0] == colors[0]]
             print("indeksy koloru w tablicy")
             print(indeksy)
             for k in range(len(indeksy)):
-                values.append(player_hand[indeksy[k]])
+                values.append(palette[indeksy[k]])
             winners.append((colors[1], colors[0], max(values, key=itemgetter(0, 1))[1],))
             print(winners)
             compatible = []
@@ -365,11 +369,9 @@ class Prepare:
 
         winners = []
         # verify which card has the higest color
+
         for j in range(1, Helper.players+1):
-            player_hand = globals()['player_hand%s' % j]
-            winners.append(max(player_hand, key=itemgetter(0, 1)))
-            # print("kolejka")
-            # print(player_hand)
-            # print(winners)
+            palette = globals()['palette%s' % j]
+            winners.append(max(palette, key=itemgetter(0, 1)))
 
         return winners.index(max(winners, key=itemgetter(0, 1))) + 1

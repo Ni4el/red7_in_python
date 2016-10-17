@@ -41,38 +41,39 @@ def move():
     winner_player = Prepare.verify_rule()
     next_player, hand, palette = Prepare.next_player(Helper.players, winner_player)
 
+    if winner_player != next_player:
 
-    print('Następny jest gracz ' + str(next_player))
-    print("Na ręce:")
-    print(hand)
-    print("W palecie")
-    print(palette)
-    option = input("Co zagrywasz? \n"
-                 "1. Kartę na tło \n"
-                 "2. Kartę na paletę \n"
-                 "3. Kartę na paletę i tło \n"
-                 "4. Poddaje się \n")
+        print('Następny jest gracz ' + str(next_player))
+        print("Na ręce:")
+        print(hand)
+        print("W palecie")
+        print(palette)
+        option = input("Co zagrywasz? \n"
+                     "1. Kartę na tło \n"
+                     "2. Kartę na paletę \n"
+                     "3. Kartę na paletę i tło \n"
+                     "4. Poddaje się \n")
 
-    if option == "1":
-        Prepare.add_card(hand, palette, False, False)
-    elif option == "2":
-        Prepare.add_card(hand, palette, True, False)
-    elif option == "3":
-        Prepare.add_card(hand, palette, True, True)
-    elif option == "4":
-        print("Przegrałeś")
+        if option == "1":
+            result = Prepare.add_card(hand, palette, False, False)
+        elif option == "2":
+            result = Prepare.add_card(hand, palette, True, False)
+        elif option == "3":
+            result = Prepare.add_card(hand, palette, True, True)
+        elif option == "4":
+            print("Przegrałeś")
+            result = False
+        else:
+            print("Wrong number")
+            result = False
+
+        if result:
+            move()
+        else:
+            print("Nadal przegrywasz")
+
     else:
-        print("Wrong number")
-
-    verify_rule = Prepare.verify_rule()
-    # verify_cards = Prepare.verify_winner()
-    # if verify_cards is True:
-    #     Prepare.next_player(players, winner_player)
+        print("Nadal przegrywasz")
 
 
-# def game():
-#     deck = hello()
-#     # move(deck);
-#
-# game()
 hello()
